@@ -13,7 +13,8 @@ service VirtualPrinter {
 
   rpc GetPrinterStatus(GetPrinterStatusRequest) returns (PrinterStatus) {}
 
-  rpc MonitorPrinterStatus(GetPrinterStatusRequest) returns (stream PrinterStatus) {}
+  rpc MonitorPrinterStatus(GetPrinterStatusRequest) 
+    returns (stream PrinterStatus) {}
 
   rpc MonitorPrintJob(GetJobStatusRequest) returns (stream PrintJob) {}
 
@@ -28,14 +29,16 @@ message CancelJobRequest {
   string job_id = 1;
 }
 
-message GetPrinterStatusRequest {}
+message GetPrinterStatusRequest {
+  string printer_id = 1;
+}
 
 message ListPrintJobsRequest {
   enum JobFilter {
-    ALL = 0;
-    ACTIVE = 1;
-    COMPLETED = 2;
-    FAILED = 3;
+    JOB_FILTER_UNSPECIFIED = 0;
+    JOB_FILTER_ACTIVE = 1;
+    JOB_FILTER_COMPLETED = 2;
+    JOB_FILTER_FAILED = 3;
   }
   
   JobFilter filter = 1;
