@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package printer;
+
+import "print.proto";
+
+service VirtualPrinter {
+  rpc SubmitPrintJob(PrintDocument) returns (PrintJob) {}
+
+  rpc GetJobStatus(GetJobStatusRequest) returns (PrintJob) {}
+
+  rpc CancelPrintJob(CancelJobRequest) returns (PrintJob) {}
+
+  rpc GetPrinterStatus(GetPrinterStatusRequest) returns (PrinterStatus) {}
+
+  rpc MonitorPrinterStatus(GetPrinterStatusRequest) returns (stream PrinterStatus) {}
+
+  rpc MonitorPrintJob(GetJobStatusRequest) returns (stream PrintJob) {}
+
+  rpc ListPrintJobs(ListPrintJobsRequest) returns (ListPrintJobsResponse) {}
+}
+
+message GetJobStatusRequest {
+  string job_id = 1;
+}
+
+message CancelJobRequest {
+  string job_id = 1;
+}
+
+message GetPrinterStatusRequest {}
+
+message ListPrintJobsRequest {
+  enum JobFilter {
+    ALL = 0;
+    ACTIVE = 1;
+    COMPLETED = 2;
+    FAILED = 3;
+  }
+  
+  JobFilter filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListPrintJobsResponse {
+  repeated PrintJob jobs = 1;
+  string next_page_token = 2;
+}
