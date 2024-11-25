@@ -59,4 +59,10 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("Job status: %v\n", jobStatus)
+
+	queuedJobs, err := client.ListPrintJobs(ctx, &proto.Empty{})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Queued jobs: %v\n", queuedJobs.GetJobs())
 }
