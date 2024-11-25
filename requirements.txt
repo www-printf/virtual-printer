@@ -1,2 +1,4 @@
-gprcio
+grpcio
 grpcio-tools
+grpc-interceptor
+PyPDF2

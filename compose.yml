@@ -1,0 +1,10 @@
+name: ${NAME:-printer}
+services:
+  machine:
+    build: .
+    image: printer-machine
+    restart: unless-stopped
+    ports:
+      - ${PORT:-50051}:50051
+    environment:
+      - AUTH_TOKEN=${AUTH_TOKEN:-}
