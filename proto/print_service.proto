@@ -39,7 +39,7 @@ message PrinterStatus {
   }
 
   Status status = 1;
-  JobStatus job_status = 2;
+  PrintJob job = 2;
 }
 
 message Empty {

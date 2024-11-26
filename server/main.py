@@ -16,6 +16,7 @@ from proto.print_service_pb2 import (
     GetJobStatusRequest,
     CancelJobRequest,
     ListPrintJobsResponse,
+    PrinterStatus,
 )
 
 from proto.print_pb2 import PrintDocument, PrintJob, JobStatus
@@ -30,6 +31,8 @@ job_queue = queue.Queue(maxsize=10)
 jobs = {}
 documents = {}
 running_job = None
+
+printer_status = PrinterStatus.STATUS_IDLE
 
 
 class VirtualPrinterService(VirtualPrinterServicer):
@@ -77,6 +80,10 @@ class VirtualPrinterService(VirtualPrinterServicer):
     def ListPrintJobs(self, request, context):
         return ListPrintJobsResponse(jobs=list(job_queue.queue))
 
+    def ViewPrinterStatus(self, request, context):
+        global printer_status
+        return PrinterStatus(status=printer_status, job=running_job)
+
 
 class AuthInterceptor(grpc.ServerInterceptor):
     def __init__(self, token):
@@ -94,9 +101,14 @@ class AuthInterceptor(grpc.ServerInterceptor):
 
 
 def worker():
+    global printer_status
+    global job_queue
+    global running_job
     while True:
         job = job_queue.get()
         job.status = JobStatus.JOB_STATUS_PROCESSING
+        printer_status = PrinterStatus.STATUS_PRINTING
+        running_job = job
         for i in range(job.total_pages):
             job.pages_printed = i + 1
             if job.status == JobStatus.JOB_STATUS_CANCELLED:
@@ -104,6 +116,9 @@ def worker():
             time.sleep(1)
         job.status = JobStatus.JOB_STATUS_COMPLETED
         job_queue.task_done()
+        running_job = None
+        printer_status = PrinterStatus.STATUS_IDLE
+        documents.pop(job.document_id)
         time.sleep(1)
 
 
