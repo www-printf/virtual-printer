@@ -60,6 +60,11 @@ class VirtualPrinterStub(object):
                 request_serializer=proto_dot_print__service__pb2.Empty.SerializeToString,
                 response_deserializer=proto_dot_print__service__pb2.ListPrintJobsResponse.FromString,
                 _registered_method=True)
+        self.ViewPrinterStatus = channel.unary_unary(
+                '/printer.VirtualPrinter/ViewPrinterStatus',
+                request_serializer=proto_dot_print__service__pb2.Empty.SerializeToString,
+                response_deserializer=proto_dot_print__service__pb2.PrinterStatus.FromString,
+                _registered_method=True)
 
 
 class VirtualPrinterServicer(object):
@@ -95,6 +100,12 @@ class VirtualPrinterServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ViewPrinterStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_VirtualPrinterServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -122,6 +133,11 @@ def add_VirtualPrinterServicer_to_server(servicer, server):
                     servicer.ListPrintJobs,
                     request_deserializer=proto_dot_print__service__pb2.Empty.FromString,
                     response_serializer=proto_dot_print__service__pb2.ListPrintJobsResponse.SerializeToString,
+            ),
+            'ViewPrinterStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.ViewPrinterStatus,
+                    request_deserializer=proto_dot_print__service__pb2.Empty.FromString,
+                    response_serializer=proto_dot_print__service__pb2.PrinterStatus.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -259,6 +275,33 @@ class VirtualPrinter(object):
             '/printer.VirtualPrinter/ListPrintJobs',
             proto_dot_print__service__pb2.Empty.SerializeToString,
             proto_dot_print__service__pb2.ListPrintJobsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ViewPrinterStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/printer.VirtualPrinter/ViewPrinterStatus',
+            proto_dot_print__service__pb2.Empty.SerializeToString,
+            proto_dot_print__service__pb2.PrinterStatus.FromString,
             options,
             channel_credentials,
             insecure,

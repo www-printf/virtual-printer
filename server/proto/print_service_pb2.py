@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from proto import print_pb2 as proto_dot_print__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19proto/print_service.proto\x12\x07printer\x1a\x11proto/print.proto\"%\n\x13GetJobStatusRequest\x12\x0e\n\x06job_id\x18\x01 \x01(\t\"\"\n\x10\x43\x61ncelJobRequest\x12\x0e\n\x06job_id\x18\x01 \x01(\t\"8\n\x15ListPrintJobsResponse\x12\x1f\n\x04jobs\x18\x01 \x03(\x0b\x32\x11.printer.PrintJob\"\x07\n\x05\x45mpty2\xdf\x02\n\x0eVirtualPrinter\x12=\n\x0eSubmitPrintJob\x12\x16.printer.PrintDocument\x1a\x11.printer.PrintJob\"\x00\x12\x41\n\x0cGetJobStatus\x12\x1c.printer.GetJobStatusRequest\x1a\x11.printer.PrintJob\"\x00\x12@\n\x0e\x43\x61ncelPrintJob\x12\x19.printer.CancelJobRequest\x1a\x11.printer.PrintJob\"\x00\x12\x46\n\x0fMonitorPrintJob\x12\x1c.printer.GetJobStatusRequest\x1a\x11.printer.PrintJob\"\x00\x30\x01\x12\x41\n\rListPrintJobs\x12\x0e.printer.Empty\x1a\x1e.printer.ListPrintJobsResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19proto/print_service.proto\x12\x07printer\x1a\x11proto/print.proto\"%\n\x13GetJobStatusRequest\x12\x0e\n\x06job_id\x18\x01 \x01(\t\"\"\n\x10\x43\x61ncelJobRequest\x12\x0e\n\x06job_id\x18\x01 \x01(\t\"8\n\x15ListPrintJobsResponse\x12\x1f\n\x04jobs\x18\x01 \x03(\x0b\x32\x11.printer.PrintJob\"\xc0\x01\n\rPrinterStatus\x12-\n\x06status\x18\x01 \x01(\x0e\x32\x1d.printer.PrinterStatus.Status\x12&\n\njob_status\x18\x02 \x01(\x0e\x32\x12.printer.JobStatus\"X\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x0f\n\x0bSTATUS_IDLE\x10\x01\x12\x13\n\x0fSTATUS_PRINTING\x10\x02\x12\x10\n\x0cSTATUS_ERROR\x10\x03\"\x07\n\x05\x45mpty2\x9e\x03\n\x0eVirtualPrinter\x12=\n\x0eSubmitPrintJob\x12\x16.printer.PrintDocument\x1a\x11.printer.PrintJob\"\x00\x12\x41\n\x0cGetJobStatus\x12\x1c.printer.GetJobStatusRequest\x1a\x11.printer.PrintJob\"\x00\x12@\n\x0e\x43\x61ncelPrintJob\x12\x19.printer.CancelJobRequest\x1a\x11.printer.PrintJob\"\x00\x12\x46\n\x0fMonitorPrintJob\x12\x1c.printer.GetJobStatusRequest\x1a\x11.printer.PrintJob\"\x00\x30\x01\x12\x41\n\rListPrintJobs\x12\x0e.printer.Empty\x1a\x1e.printer.ListPrintJobsResponse\"\x00\x12=\n\x11ViewPrinterStatus\x12\x0e.printer.Empty\x1a\x16.printer.PrinterStatus\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -38,8 +38,12 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_CANCELJOBREQUEST']._serialized_end=130
   _globals['_LISTPRINTJOBSRESPONSE']._serialized_start=132
   _globals['_LISTPRINTJOBSRESPONSE']._serialized_end=188
-  _globals['_EMPTY']._serialized_start=190
-  _globals['_EMPTY']._serialized_end=197
-  _globals['_VIRTUALPRINTER']._serialized_start=200
-  _globals['_VIRTUALPRINTER']._serialized_end=551
+  _globals['_PRINTERSTATUS']._serialized_start=191
+  _globals['_PRINTERSTATUS']._serialized_end=383
+  _globals['_PRINTERSTATUS_STATUS']._serialized_start=295
+  _globals['_PRINTERSTATUS_STATUS']._serialized_end=383
+  _globals['_EMPTY']._serialized_start=385
+  _globals['_EMPTY']._serialized_end=392
+  _globals['_VIRTUALPRINTER']._serialized_start=395
+  _globals['_VIRTUALPRINTER']._serialized_end=809
 # @@protoc_insertion_point(module_scope)

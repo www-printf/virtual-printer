@@ -56,20 +56,3 @@ enum JobStatus {
   JOB_STATUS_FAILED = 4;
   JOB_STATUS_CANCELLED = 5;
 }
-
-message PrinterStatus {
-  enum State {
-    STATE_UNSPECIFIED = 0;
-    STATE_READY = 1;
-    STATE_BUSY = 2;
-    STATE_ERROR = 3;
-    STATE_OFFLINE = 4;
-  }
-
-  State state = 1;
-  string error_message = 2;
-  int32 jobs_in_queue = 3;
-  bool paper_jam = 4;
-  int32 paper_level = 5;
-  int32 toner_level = 6;
-}

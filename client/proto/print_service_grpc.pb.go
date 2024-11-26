@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	VirtualPrinter_SubmitPrintJob_FullMethodName  = "/printer.VirtualPrinter/SubmitPrintJob"
-	VirtualPrinter_GetJobStatus_FullMethodName    = "/printer.VirtualPrinter/GetJobStatus"
-	VirtualPrinter_CancelPrintJob_FullMethodName  = "/printer.VirtualPrinter/CancelPrintJob"
-	VirtualPrinter_MonitorPrintJob_FullMethodName = "/printer.VirtualPrinter/MonitorPrintJob"
-	VirtualPrinter_ListPrintJobs_FullMethodName   = "/printer.VirtualPrinter/ListPrintJobs"
+	VirtualPrinter_SubmitPrintJob_FullMethodName    = "/printer.VirtualPrinter/SubmitPrintJob"
+	VirtualPrinter_GetJobStatus_FullMethodName      = "/printer.VirtualPrinter/GetJobStatus"
+	VirtualPrinter_CancelPrintJob_FullMethodName    = "/printer.VirtualPrinter/CancelPrintJob"
+	VirtualPrinter_MonitorPrintJob_FullMethodName   = "/printer.VirtualPrinter/MonitorPrintJob"
+	VirtualPrinter_ListPrintJobs_FullMethodName     = "/printer.VirtualPrinter/ListPrintJobs"
+	VirtualPrinter_ViewPrinterStatus_FullMethodName = "/printer.VirtualPrinter/ViewPrinterStatus"
 )
 
 // VirtualPrinterClient is the client API for VirtualPrinter service.
@@ -35,6 +36,7 @@ type VirtualPrinterClient interface {
 	CancelPrintJob(ctx context.Context, in *CancelJobRequest, opts ...grpc.CallOption) (*PrintJob, error)
 	MonitorPrintJob(ctx context.Context, in *GetJobStatusRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[PrintJob], error)
 	ListPrintJobs(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListPrintJobsResponse, error)
+	ViewPrinterStatus(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*PrinterStatus, error)
 }
 
 type virtualPrinterClient struct {
@@ -104,6 +106,16 @@ func (c *virtualPrinterClient) ListPrintJobs(ctx context.Context, in *Empty, opt
 	return out, nil
 }
 
+func (c *virtualPrinterClient) ViewPrinterStatus(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*PrinterStatus, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PrinterStatus)
+	err := c.cc.Invoke(ctx, VirtualPrinter_ViewPrinterStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // VirtualPrinterServer is the server API for VirtualPrinter service.
 // All implementations must embed UnimplementedVirtualPrinterServer
 // for forward compatibility.
@@ -113,6 +125,7 @@ type VirtualPrinterServer interface {
 	CancelPrintJob(context.Context, *CancelJobRequest) (*PrintJob, error)
 	MonitorPrintJob(*GetJobStatusRequest, grpc.ServerStreamingServer[PrintJob]) error
 	ListPrintJobs(context.Context, *Empty) (*ListPrintJobsResponse, error)
+	ViewPrinterStatus(context.Context, *Empty) (*PrinterStatus, error)
 	mustEmbedUnimplementedVirtualPrinterServer()
 }
 
@@ -137,6 +150,9 @@ func (UnimplementedVirtualPrinterServer) MonitorPrintJob(*GetJobStatusRequest, g
 }
 func (UnimplementedVirtualPrinterServer) ListPrintJobs(context.Context, *Empty) (*ListPrintJobsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListPrintJobs not implemented")
+}
+func (UnimplementedVirtualPrinterServer) ViewPrinterStatus(context.Context, *Empty) (*PrinterStatus, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewPrinterStatus not implemented")
 }
 func (UnimplementedVirtualPrinterServer) mustEmbedUnimplementedVirtualPrinterServer() {}
 func (UnimplementedVirtualPrinterServer) testEmbeddedByValue()                        {}
@@ -242,6 +258,24 @@ func _VirtualPrinter_ListPrintJobs_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _VirtualPrinter_ViewPrinterStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VirtualPrinterServer).ViewPrinterStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VirtualPrinter_ViewPrinterStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VirtualPrinterServer).ViewPrinterStatus(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // VirtualPrinter_ServiceDesc is the grpc.ServiceDesc for VirtualPrinter service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -264,6 +298,10 @@ var VirtualPrinter_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListPrintJobs",
 			Handler:    _VirtualPrinter_ListPrintJobs_Handler,
+		},
+		{
+			MethodName: "ViewPrinterStatus",
+			Handler:    _VirtualPrinter_ViewPrinterStatus_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

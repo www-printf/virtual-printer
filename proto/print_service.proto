@@ -14,6 +14,8 @@ service VirtualPrinter {
   rpc MonitorPrintJob(GetJobStatusRequest) returns (stream PrintJob) {}
 
   rpc ListPrintJobs(Empty) returns (ListPrintJobsResponse) {}
+
+  rpc ViewPrinterStatus(Empty) returns (PrinterStatus) {}
 }
 
 message GetJobStatusRequest {
@@ -28,4 +30,17 @@ message ListPrintJobsResponse {
   repeated PrintJob jobs = 1;
 }
 
-message Empty {}
+message PrinterStatus {
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_IDLE = 1;
+    STATUS_PRINTING = 2;
+    STATUS_ERROR = 3;
+  }
+
+  Status status = 1;
+  JobStatus job_status = 2;
+}
+
+message Empty {
+}
