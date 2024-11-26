@@ -40,7 +40,7 @@ func main() {
 			ColorMode:   proto.PrintSettings_COLOR_MODE_GRAYSCALE,
 			PaperSize:   proto.PrintSettings_PAPER_SIZE_A4,
 			Orientation: proto.PrintSettings_ORIENTATION_PORTRAIT,
-			Copies:      1,
+			Copies:      2,
 			DoubleSided: false,
 		},
 	})

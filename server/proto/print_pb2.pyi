@@ -49,12 +49,12 @@ class PrintSettings(_message.Message):
         PAPER_SIZE_A5: _ClassVar[PrintSettings.PaperSize]
         PAPER_SIZE_A4: _ClassVar[PrintSettings.PaperSize]
         PAPER_SIZE_A3: _ClassVar[PrintSettings.PaperSize]
-        PAPER_SIZE_A6: _ClassVar[PrintSettings.PaperSize]
+        PAPER_SIZE_A2: _ClassVar[PrintSettings.PaperSize]
     PAPER_SIZE_SIZE_UNSPECIFIED: PrintSettings.PaperSize
     PAPER_SIZE_A5: PrintSettings.PaperSize
     PAPER_SIZE_A4: PrintSettings.PaperSize
     PAPER_SIZE_A3: PrintSettings.PaperSize
-    PAPER_SIZE_A6: PrintSettings.PaperSize
+    PAPER_SIZE_A2: PrintSettings.PaperSize
     class Orientation(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         ORIENTATION_UNSPECIFIED: _ClassVar[PrintSettings.Orientation]
@@ -76,17 +76,19 @@ class PrintSettings(_message.Message):
     def __init__(self, color_mode: _Optional[_Union[PrintSettings.ColorMode, str]] = ..., paper_size: _Optional[_Union[PrintSettings.PaperSize, str]] = ..., orientation: _Optional[_Union[PrintSettings.Orientation, str]] = ..., copies: _Optional[int] = ..., double_sided: bool = ...) -> None: ...
 
 class PrintJob(_message.Message):
-    __slots__ = ("job_id", "document_id", "submitted_at", "status", "pages_printed", "total_pages")
+    __slots__ = ("job_id", "document_id", "submitted_at", "status", "pages_printed", "total_pages", "eta_seconds")
     JOB_ID_FIELD_NUMBER: _ClassVar[int]
     DOCUMENT_ID_FIELD_NUMBER: _ClassVar[int]
     SUBMITTED_AT_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     PAGES_PRINTED_FIELD_NUMBER: _ClassVar[int]
     TOTAL_PAGES_FIELD_NUMBER: _ClassVar[int]
+    ETA_SECONDS_FIELD_NUMBER: _ClassVar[int]
     job_id: str
     document_id: str
     submitted_at: _timestamp_pb2.Timestamp
     status: JobStatus
     pages_printed: int
     total_pages: int
-    def __init__(self, job_id: _Optional[str] = ..., document_id: _Optional[str] = ..., submitted_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., status: _Optional[_Union[JobStatus, str]] = ..., pages_printed: _Optional[int] = ..., total_pages: _Optional[int] = ...) -> None: ...
+    eta_seconds: int
+    def __init__(self, job_id: _Optional[str] = ..., document_id: _Optional[str] = ..., submitted_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., status: _Optional[_Union[JobStatus, str]] = ..., pages_printed: _Optional[int] = ..., total_pages: _Optional[int] = ..., eta_seconds: _Optional[int] = ...) -> None: ...

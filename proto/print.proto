@@ -23,7 +23,7 @@ message PrintSettings {
     PAPER_SIZE_A5 = 1;
     PAPER_SIZE_A4 = 2;
     PAPER_SIZE_A3 = 3;
-    PAPER_SIZE_A6 = 4;
+    PAPER_SIZE_A2 = 4;
   }
 
   enum Orientation {
@@ -46,6 +46,7 @@ message PrintJob {
   JobStatus status = 4;
   int32 pages_printed = 5;
   int32 total_pages = 6;
+  int32 eta_seconds = 7;
 }
 
 enum JobStatus {
