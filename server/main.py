@@ -163,7 +163,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: {} PORT".format(sys.argv[0]))
         sys.exit(1)
-    l = threading.Thread(target=serve, args=(sys.argv[1]))
+    l = threading.Thread(target=serve, args=(sys.argv[1],))
     w = threading.Thread(target=worker)
     l.start()
     w.start()
