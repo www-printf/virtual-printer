@@ -143,8 +143,8 @@ def worker():
         time.sleep(1)
 
 
-def serve(PORT: int, key: str = None):
-    interceptors = [ExceptionToStatusInterceptor(), AuthInterceptor(key)]
+def serve(PORT: int):
+    interceptors = [ExceptionToStatusInterceptor()]
     server = grpc.server(
         futures.ThreadPoolExecutor(max_workers=10), interceptors=interceptors
     )
@@ -163,9 +163,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: {} PORT".format(sys.argv[0]))
         sys.exit(1)
-    l = threading.Thread(
-        target=serve, args=(sys.argv[1], os.getenv("AUTH_TOKEN", None))
-    )
+    l = threading.Thread(target=serve, args=(sys.argv[1]))
     w = threading.Thread(target=worker)
     l.start()
     w.start()
