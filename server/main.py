@@ -45,10 +45,10 @@ class VirtualPrinterService(VirtualPrinterServicer):
     }
 
     def SubmitPrintJob(self, request: PrintDocument, context: grpc.ServicerContext):
-        if job_queue.full():
+        copies = request.settings.copies
+        if job_queue.full() or len(job_queue.queue) + copies > job_queue.maxsize:
             context.abort(grpc.StatusCode.RESOURCE_EXHAUSTED, "Job queue is full")
         req_file = PyPDF2.PdfReader(stream=BytesIO(request.content))
-        copies = request.settings.copies
         print_jobs = []
         for _ in range(copies):
             print_job = PrintJob(
