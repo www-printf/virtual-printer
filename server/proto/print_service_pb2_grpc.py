@@ -38,7 +38,7 @@ class VirtualPrinterStub(object):
         self.SubmitPrintJob = channel.unary_unary(
                 '/printer.VirtualPrinter/SubmitPrintJob',
                 request_serializer=proto_dot_print__pb2.PrintDocument.SerializeToString,
-                response_deserializer=proto_dot_print__pb2.PrintJob.FromString,
+                response_deserializer=proto_dot_print__service__pb2.ListPrintJobsResponse.FromString,
                 _registered_method=True)
         self.GetJobStatus = channel.unary_unary(
                 '/printer.VirtualPrinter/GetJobStatus',
@@ -112,7 +112,7 @@ def add_VirtualPrinterServicer_to_server(servicer, server):
             'SubmitPrintJob': grpc.unary_unary_rpc_method_handler(
                     servicer.SubmitPrintJob,
                     request_deserializer=proto_dot_print__pb2.PrintDocument.FromString,
-                    response_serializer=proto_dot_print__pb2.PrintJob.SerializeToString,
+                    response_serializer=proto_dot_print__service__pb2.ListPrintJobsResponse.SerializeToString,
             ),
             'GetJobStatus': grpc.unary_unary_rpc_method_handler(
                     servicer.GetJobStatus,
@@ -166,7 +166,7 @@ class VirtualPrinter(object):
             target,
             '/printer.VirtualPrinter/SubmitPrintJob',
             proto_dot_print__pb2.PrintDocument.SerializeToString,
-            proto_dot_print__pb2.PrintJob.FromString,
+            proto_dot_print__service__pb2.ListPrintJobsResponse.FromString,
             options,
             channel_credentials,
             insecure,

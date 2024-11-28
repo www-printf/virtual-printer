@@ -49,20 +49,23 @@ class VirtualPrinterService(VirtualPrinterServicer):
             context.abort(grpc.StatusCode.RESOURCE_EXHAUSTED, "Job queue is full")
         req_file = PyPDF2.PdfReader(stream=BytesIO(request.content))
         copies = request.settings.copies
-        print_job = PrintJob(
-            job_id=str(uuid.uuid4()),
-            document_id=request.document_id,
-            total_pages=len(req_file.pages) * copies,
-            pages_printed=0,
-            status=JobStatus.JOB_STATUS_PENDING,
-            eta_seconds=self._calc_eta(
-                len(req_file.pages) * copies, request.settings.paper_size
-            ),
-        )
-        documents[request.document_id] = request
-        jobs[print_job.job_id] = print_job
-        job_queue.put(print_job)
-        return print_job
+        print_jobs = []
+        for _ in range(copies):
+            print_job = PrintJob(
+                job_id=str(uuid.uuid4()),
+                document_id=request.document_id,
+                total_pages=len(req_file.pages),
+                pages_printed=0,
+                status=JobStatus.JOB_STATUS_PENDING,
+                eta_seconds=self._calc_eta(
+                    len(req_file.pages), request.settings.paper_size
+                ),
+            )
+            documents[request.document_id] = request
+            jobs[print_job.job_id] = print_job
+            job_queue.put(print_job)
+            print_jobs.append(print_job)
+        return ListPrintJobsResponse(jobs=print_jobs)
 
     def GetJobStatus(self, request: GetJobStatusRequest, context: grpc.ServicerContext):
         if request.job_id in jobs:
@@ -126,13 +129,12 @@ def worker():
         running_job = job
         document = documents[job.document_id]
         size = document.settings.paper_size
-        copies = document.settings.copies
         for i in range(job.total_pages):
             job.pages_printed = i + 1
             if job.status == JobStatus.JOB_STATUS_CANCELLED:
                 break
             job.eta_seconds = VirtualPrinterService._calc_eta(
-                job.total_pages * copies, size, job.pages_printed
+                job.total_pages, size, job.pages_printed
             )
             time.sleep(VirtualPrinterService.ETA_SIZE[size])
         job.status = JobStatus.JOB_STATUS_COMPLETED
