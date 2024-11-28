@@ -92,7 +92,7 @@ class VirtualPrinterService(VirtualPrinterServicer):
             yield job
 
     def ListPrintJobs(self, request, context):
-        return ListPrintJobsResponse(jobs=list(job_queue.queue))
+        return ListPrintJobsResponse(jobs=list(job_queue.queue) + [running_job])
 
     def ViewPrinterStatus(self, request, context):
         global printer_status
@@ -141,8 +141,9 @@ def worker():
         job_queue.task_done()
         running_job = None
         printer_status = PrinterStatus.STATUS_IDLE
-        documents.pop(job.document_id)
         time.sleep(1)
+        if job_queue.empty():
+            documents = {}
 
 
 def serve(PORT: int):

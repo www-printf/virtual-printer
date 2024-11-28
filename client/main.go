@@ -48,12 +48,12 @@ func main() {
 		panic(err)
 	}
 
-	println("Print job submitted successfully with job id: ", resp.JobId)
+	println("Print job submitted successfully with job id: ", resp.Jobs[0].JobId)
 
 	time.Sleep(time.Second * 3)
 
 	jobStatus, err := client.GetJobStatus(ctx, &proto.GetJobStatusRequest{
-		JobId: resp.JobId,
+		JobId: resp.Jobs[0].JobId,
 	})
 	if err != nil {
 		panic(err)
